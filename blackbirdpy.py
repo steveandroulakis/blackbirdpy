@@ -72,7 +72,7 @@ def easy_to_read_timestamp_string(dt):
 
 def tweet_id_from_tweet_url(tweet_url):
     """Extract and return the numeric tweet ID from a full tweet URL."""
-    match = re.match(r'^http://twitter\.com/\w+/status(?:es)?/(\d+)$', tweet_url)
+    match = re.match(r'^http://twitter\.com/(?:#!\/)\w+/status(?:es)?/(\d+)$', tweet_url)
     try:
         return match.group(1)
     except AttributeError:
