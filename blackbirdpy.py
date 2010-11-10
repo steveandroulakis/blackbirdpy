@@ -71,7 +71,7 @@ def easy_to_read_timestamp_string(dt):
 
 def tweet_id_from_tweet_url(tweet_url):
     """Extract and return the numeric tweet ID from a full tweet URL."""
-    match = re.match(r'^http://twitter\.com/(?:#!\/)\w+/status(?:es)?/(\d+)$', tweet_url)
+    match = re.match(r'^https?://twitter\.com/(?:#!\/)\w+/status(?:es)?/(\d+)$', tweet_url)
     try:
         return match.group(1)
     except AttributeError:
@@ -98,7 +98,7 @@ def embed_tweet_html(tweet_url, extra_css=None):
     tweet_text = wrap_user_mention_with_link(
         wrap_hashtag_with_link(
             wrap_http_with_link(
-                tweet_json['text'].replace('\n', ' ')
+                tweet_json['text'].replace('\n', '<br/>')
                 )
             )
         )
@@ -224,5 +224,5 @@ if __name__ == '__main__':
     if len(args) != 1:
         option_parser.print_help()
         sys.exit(1)
-    # print TWEET_EMBED_HTML
-    print embed_tweet_html(args[0])
+    
+    print embed_tweet_html(args[0]).encode('utf8')
