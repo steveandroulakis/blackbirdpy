@@ -53,7 +53,8 @@ def wrap_hashtag_with_link(text):
 
 def wrap_http_with_link(text):
     """Replace http://foo with <a href="http://foo">http://foo</a>"""
-    return re.sub(r'(^|[^\w])(http://[^\s]+)', r'\1<a href="\2">\2</a>', text)
+    return re.sub(r'((https?|ftp)://[^ \n]+[^ \n.,;:?!&\'"’”)}\]])', r'<a href="\1">\1</a>', text)
+
 
 
 def timestamp_string_to_datetime(text):
@@ -97,11 +98,9 @@ def embed_tweet_html(tweet_url, extra_css=None):
 
     tweet_text = wrap_user_mention_with_link(
         wrap_hashtag_with_link(
-            wrap_http_with_link(
-                tweet_json['text'].replace('\n', '<br/>')
-                )
+            wrap_http_with_link(tweet_json['text'])
             )
-        )
+        ).replace('\n', '<br/>')
 
     tweet_created_datetime = timestamp_string_to_datetime(tweet_json["created_at"])
     tweet_local_datetime = tweet_created_datetime + (datetime.datetime.now() - datetime.datetime.utcnow())
