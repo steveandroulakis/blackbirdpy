@@ -56,11 +56,11 @@ def wrap_entities(json):
       link = '<a href="' + u['expanded_url'] + '">' + u['display_url'] + '</a>'
     except (KeyError, TypeError):
       link = '<a href="' + u['url'] + '">' + u['url'] + '</a>'
-    text = re.sub(u['url'], link, text, 0, re.I)
+    text = text.replace(u['url'], link)
   
   for m in mentions:
-    text = re.sub('@' + m['screen_name'], '<a href="http://twitter.com/' +
-            m['screen_name'] + '">@' + m['screen_name'] + '</a>', text, 0, re.I)
+    text = re.sub('(?i)@' + m['screen_name'], '<a href="http://twitter.com/' +
+            m['screen_name'] + '">@' + m['screen_name'] + '</a>', text, 0)
   
   for m in media:
     if m['type'] == 'photo':
@@ -68,7 +68,7 @@ def wrap_entities(json):
               '<img src="' + m['media_url'] + ':small"></a><br />'
     else:
       link = '<a href="' + m['expanded_url'] + '">' + m['display_url'] + '</a>'
-    text = re.sub(m['url'], link, text, 0, re.I)
+    text = text.replace(m['url'], link)
 
   return text
     
