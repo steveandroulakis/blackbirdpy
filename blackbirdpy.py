@@ -65,7 +65,7 @@ def wrap_entities(json):
   for m in media:
     if m['type'] == 'photo':
       link = '<br /><a href="' + m['media_url'] + ':large">' +\
-              '<img src="' + m['media_url'] + ':thumb"></a><br />'
+              '<img src="' + m['media_url'] + ':small"></a><br />'
     else:
       link = '<a href="' + m['expanded_url'] + '">' + m['display_url'] + '</a>'
     text = re.sub(m['url'], link, text)
