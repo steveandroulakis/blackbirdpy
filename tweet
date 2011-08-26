@@ -1,3 +1,2 @@
 tell application "Safari" to set tweetURL to URL of front document
-
-do shell script "/usr/local/bin/python ~/blackbirdpy/blackbirdpy.py '" & tweetURL & "'"
+do shell script "/usr/bin/python ~/git/blackbirdpy/blackbirdpy.py '" & tweetURL & "'"
