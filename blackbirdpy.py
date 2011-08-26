@@ -40,22 +40,38 @@ TWEET_EMBED_HTML = u'''<!-- {tweetURL} -->
 <div class='bbpBox{id}'><blockquote class="bbpTweet"><p class="tweet">{tweetText}</p><p class='timestamp'><a title='{timeStamp}' href='{tweetURL}'>{easyTimeStamp}</a></p><p class='metadata'><span class='author'><a href='http://twitter.com/{screenName}'><img src='{profilePic}' /></a><a href='http://twitter.com/{screenName}'><strong>@{screenName}</strong></a> <span class='realName'>{realName}</span></span></p></blockquote></div>
 <!-- end of tweet -->'''
 
+def wrap_entities(json):
+  """Turn URLs and @ mentions into links. Embed Twitter native photos."""
+  text = json['text']
+  mentions = json['entities']['user_mentions']
+  urls = json['entities']['urls']
+  # media = json['entities']['media']
+  try:
+    media = json['entities']['media']
+  except KeyError:
+    media = []
+  
+  for u in urls:
+    try:
+      link = '<a href="' + u['expanded_url'] + '">' + u['display_url'] + '</a>'
+    except (KeyError, TypeError):
+      link = '<a href="' + u['url'] + '">' + u['url'] + '</a>'
+    text = re.sub(u['url'], link, text)
+  
+  for m in mentions:
+    text = re.sub('@' + m['screen_name'], '<a href="http://twitter.com/' +
+            m['screen_name'] + '">@' + m['screen_name'] + '</a>', text, 0, re.I)
+  
+  for m in media:
+    if m['type'] == 'photo':
+      link = '<br /><a href="' + m['media_url'] + ':large">' +\
+              '<img src="' + m['media_url'] + ':thumb"></a><br />'
+    else:
+      link = '<a href="' + m['expanded_url'] + '">' + m['display_url'] + '</a>'
+    text = re.sub(m['url'], link, text)
 
-def wrap_user_mention_with_link(text):
-    """Replace @user with <a href="http://twitter.com/user">@user</a>"""
-    return re.sub(r'(^|[^\w])@(\w+)\b', r'\1<a href="http://twitter.com/\2">@\2</a>', text)
-
-
-def wrap_hashtag_with_link(text):
-    """Replace #hashtag with <a href="http://twitter.com/search?q=hashtag">#hashtag</a>"""
-    return re.sub(r'(^|[^\w])#(\w+)\b', r'\1<a href="http://twitter.com/search?q=\2">#\2</a>', text)
-
-
-def wrap_http_with_link(text):
-    """Replace http://foo with <a href="http://foo">http://foo</a>"""
-    return re.sub(r'((https?|ftp)://[^ \n]+[^ \n.,;:?!&\'"’”)}\]])', r'<a href="\1">\1</a>', text)
-
-
+  return text
+    
 
 def timestamp_string_to_datetime(text):
     """Convert a string timestamp of the form 'Wed Jun 09 18:31:55 +0000 2010'
@@ -90,17 +106,13 @@ def embed_tweet_html(tweet_url, extra_css=None):
     class name is used by this feature.
     """
     tweet_id = tweet_id_from_tweet_url(tweet_url)
-    api_url = 'http://api.twitter.com/1/statuses/show.json?id=' + tweet_id
+    api_url = 'http://api.twitter.com/1/statuses/show.json?include_entities=true&id=' + tweet_id
     api_handle = urllib2.urlopen(api_url)
     api_data = api_handle.read()
     api_handle.close()
     tweet_json = json.loads(api_data)
-
-    tweet_text = wrap_user_mention_with_link(
-        wrap_hashtag_with_link(
-            wrap_http_with_link(tweet_json['text'])
-            )
-        ).replace('\n', '<br/>')
+    
+    tweet_text = wrap_entities(tweet_json).replace('\n', '<br />')
 
     tweet_created_datetime = timestamp_string_to_datetime(tweet_json["created_at"])
     tweet_local_datetime = tweet_created_datetime + (datetime.datetime.now() - datetime.datetime.utcnow())
