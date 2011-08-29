@@ -44,6 +44,7 @@ def wrap_entities(json):
   """Turn URLs and @ mentions into links. Embed Twitter native photos."""
   text = json['text']
   mentions = json['entities']['user_mentions']
+  hashtags = json['entities']['hashtags']
   urls = json['entities']['urls']
   # media = json['entities']['media']
   try:
@@ -61,6 +62,10 @@ def wrap_entities(json):
   for m in mentions:
     text = re.sub('(?i)@' + m['screen_name'], '<a href="http://twitter.com/' +
             m['screen_name'] + '">@' + m['screen_name'] + '</a>', text, 0)
+
+  for h in hashtags:
+    text = re.sub('(?i)#' + h['text'], '<a href="http://twitter.com/search/%23' +
+            h['text'] + '">#' + h['text'] + '</a>', text, 0)
   
   for m in media:
     if m['type'] == 'photo':
