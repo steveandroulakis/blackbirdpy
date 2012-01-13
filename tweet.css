@@ -1,4 +1,4 @@
-#content .bbpBox {
+.bbpBox {
   width: 75%;
   background: #F3FEF3;
   margin-left: auto;
@@ -6,7 +6,7 @@
   padding: 1em;
 }
 
-#content .bbpBox blockquote {
+.bbpBox blockquote {
   font-size: 110%;
   background-color: white;
   margin: 0em !important;
@@ -15,20 +15,20 @@
   -webkit-border-radius: 5px
 }
 
-#content .bbpBox blockquote a {
+.bbpBox blockquote a {
   color: blue;
   text-decoration: none;
 }
 
-#content .bbpBox blockquote a:hover {
+.bbpBox blockquote a:hover {
   text-decoration: underline;
 }
 
-#content .bbpBox blockquote .twMeta {
+.bbpBox blockquote .twMeta {
   font-size: 80%;
 }
 
-#content .bbpBox blockquote .twAuthor {
+.bbpBox blockquote .twAuthor {
   font-family: Sans-serif;
   font-size: 80%;
   color: #aaa;
@@ -37,13 +37,13 @@
   border-top: solid 1px #aaa;
 }
 
-#content .bbpBox blockquote .twDate {
+.bbpBox blockquote .twDate {
   font-family: Sans-serif;
   font-size: 60%;
   text-align: right;
 }
 
-#content .bbpBox blockquote .twAuthor img {
+.bbpBox blockquote .twAuthor img {
   float: left;
   margin-right: .5em;
   height: 2.5em;
