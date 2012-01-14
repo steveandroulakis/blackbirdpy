@@ -1,9 +1,9 @@
 .bbpBox {
-  width: 75%;
+  width: 80%;
   background: #F3FEF3;
   margin-left: auto;
   margin-right: auto;
-  padding: 1em;
+  padding: 1.25em;
 }
 
 .bbpBox blockquote {
