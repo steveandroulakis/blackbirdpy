@@ -35,7 +35,7 @@ import sys
 import unittest
 import urllib2
 
-TWEET_EMBED_HTML = u'''<div class="bbpBox" id="t{id}"><blockquote><span class="twContent">{tweetText}</span><span class="twMeta"><br /><span class="twDecoration">&nbsp;&nbsp;&mdash; </span><span class="twRealName">{realName}</span><span class="twDecoration"> (</span><a href="http://twitter.com/{screenName}><span class="twScreenName">@{screenName}</span></a><span class="twDecoration">) </span><a href="{tweetURL}"><span class="twTimeStamp">{easyTimeStamp}</span></a><span class="twDecoration"></span></span></blockquote></div>
+TWEET_EMBED_HTML = u'''<div class="bbpBox" id="t{id}"><blockquote><span class="twContent">{tweetText}</span><span class="twMeta"><br /><span class="twDecoration">&nbsp;&nbsp;&mdash; </span><span class="twRealName">{realName}</span><span class="twDecoration"> (</span><a href="http://twitter.com/{screenName}"><span class="twScreenName">@{screenName}</span></a><span class="twDecoration">) </span><a href="{tweetURL}"><span class="twTimeStamp">{easyTimeStamp}</span></a><span class="twDecoration"></span></span></blockquote></div>
 '''
 
 def wrap_entities(json):
